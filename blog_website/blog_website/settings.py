@@ -27,6 +27,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['8000-sammanomar-blog-cm7ovot2td.us2.codeanyapp.com']
 
+CSRF_TRUSTED_ORIGINS = [
+    'https://8000-sammanomar-blog-cm7ovot2td.us2.codeanyapp.com']
+
 
 # Application definition
 
@@ -38,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'blog',
+    'user_profile',
 ]
 
 MIDDLEWARE = [
@@ -126,3 +130,5 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+AUTH_USER_MODEL = 'user_profile.User'
