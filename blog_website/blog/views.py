@@ -1,8 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.core.paginator import PageNotAnInteger, EmptyPage, Paginator
 
 from .models import (
     Blog,
+    Category,
     Tag
 )
 # Create your views here.
@@ -30,7 +31,7 @@ def blogs(request):
         blogs = paginator.page(1)
     except PageNotAnInteger:
         blogs = paginator.page(1)
-        # return redirect('blogs')
+        return redirect('blogs')
 
     context = {
         "blogs": blogs,
@@ -38,3 +39,51 @@ def blogs(request):
         "paginator": paginator
     }
     return render(request, 'blogs.html', context)
+
+
+def category_blogs(request, slug):
+    category = get_object_or_404(Category, slug=slug)
+    queryset = category.category_blogs.all()
+    tags = Tag.objects.order_by('-created_date')[:5]
+    page = request.GET.get('page', 1)
+    paginator = Paginator(queryset, 2)
+    all_blogs = Blog.objects.order_by('-created_date')[:5]
+
+    try:
+        blogs = paginator.page(page)
+    except EmptyPage:
+        blogs = paginator.page(1)
+    except PageNotAnInteger:
+        blogs = paginator.page(1)
+        return redirect('blogs')
+
+    context = {
+        "blogs": blogs,
+        "tags": tags,
+        "all_blogs": all_blogs
+    }
+    return render(request, 'category_blogs.html', context)
+
+
+def tag_blogs(request, slug):
+    tag = get_object_or_404(Tag, slug=slug)
+    queryset = tag.tag_blogs.all()
+    tags = Tag.objects.order_by('-created_date')[:5]
+    page = request.GET.get('page', 1)
+    paginator = Paginator(queryset, 2)
+    all_blogs = Blog.objects.order_by('-created_date')[:5]
+
+    try:
+        blogs = paginator.page(page)
+    except EmptyPage:
+        blogs = paginator.page(1)
+    except PageNotAnInteger:
+        blogs = paginator.page(1)
+        return redirect('blogs')
+
+    context = {
+        "blogs": blogs,
+        "tags": tags,
+        "all_blogs": all_blogs
+    }
+    return render(request, 'category_blogs.html', context)

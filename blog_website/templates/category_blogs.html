@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %} Blogs {% endblock title %}
+{% block title %} Category Blogs {% endblock title %}
 
 {% block content %}
 <section class="blog-posts grid-system">
@@ -19,7 +19,7 @@
                     </div>
                 </div>
             </div>
-            {% include 'sidebar.html' %}
+            {% include 'sidebar.html' with blogs=all_blogs %}
         </div>
     </div>
 </section>
