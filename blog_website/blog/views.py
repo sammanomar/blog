@@ -30,7 +30,7 @@ def blogs(request):
         blogs = paginator.page(1)
     except PageNotAnInteger:
         blogs = paginator.page(1)
-        return redirect('blogs')
+        # return redirect('blogs')
 
     context = {
         "blogs": blogs,
