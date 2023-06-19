@@ -1,11 +1,17 @@
+from django.core import paginator
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
 from django.core.paginator import PageNotAnInteger, EmptyPage, Paginator
 
 from .models import (
     Blog,
     Category,
-    Tag
+    Reply,
+    Tag,
+    Comment
 )
+
+from .forms import TextForm
 # Create your views here.
 
 
@@ -90,13 +96,41 @@ def tag_blogs(request, slug):
 
 
 def blog_details(request, slug):
+    form = TextForm()
     blog = get_object_or_404(Blog, slug=slug)
     category = Category.objects.get(id=blog.category.id)
     related_blogs = category.category_blogs.all()
     tags = Tag.objects.order_by('-created_date')[:5]
+
+    if request.method == "POST" and request.user.is_authenticated:
+        form = TextForm(request.POST)
+        if form.is_valid():
+            Comment.objects.create(
+                user=request.user,
+                blog=blog,
+                text=form.cleaned_data.get('text')
+            )
+            return redirect('blog_details', slug=slug)
+
     context = {
         "blog": blog,
         "related_blogs": related_blogs,
         "tags": tags,
+        "form": form,
     }
     return render(request, 'blog_details.html', context)
+
+
+@login_required(login_url='login')
+def add_reply(request, blog_id, comment_id):
+    blog = get_object_or_404(Blog, id=blog_id)
+    if request.method == "POST":
+        form = TextForm(request.POST)
+        if form.is_valid():
+            comment = get_object_or_404(Comment, id=comment_id)
+            Reply.objects.create(
+                user=request.user,
+                comment=comment,
+                text=form.cleaned_data.get('text')
+            )
+    return redirect('blog_details', slug=blog.slug)
