@@ -13,4 +13,6 @@ urlpatterns = [
     path('like_blog/<int:pk>/', like_blog, name='like_blog'),
     path('search_blogs/', search_blogs, name='search_blogs'),
 
+
+
 ]
