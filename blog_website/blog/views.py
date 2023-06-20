@@ -1,4 +1,5 @@
 from django.core import paginator
+from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
 from django.core.paginator import PageNotAnInteger, EmptyPage, Paginator
@@ -101,6 +102,7 @@ def blog_details(request, slug):
     category = Category.objects.get(id=blog.category.id)
     related_blogs = category.category_blogs.all()
     tags = Tag.objects.order_by('-created_date')[:5]
+    liked_by = request.user in blog.likes.all()
 
     if request.method == "POST" and request.user.is_authenticated:
         form = TextForm(request.POST)
@@ -109,6 +111,7 @@ def blog_details(request, slug):
                 user=request.user,
                 blog=blog,
                 text=form.cleaned_data.get('text')
+
             )
             return redirect('blog_details', slug=slug)
 
@@ -117,6 +120,7 @@ def blog_details(request, slug):
         "related_blogs": related_blogs,
         "tags": tags,
         "form": form,
+        "liked_by": liked_by
     }
     return render(request, 'blog_details.html', context)
 
@@ -134,3 +138,21 @@ def add_reply(request, blog_id, comment_id):
                 text=form.cleaned_data.get('text')
             )
     return redirect('blog_details', slug=blog.slug)
+
+
+@login_required(login_url='login')
+def like_blog(request, pk):
+    context = {}
+    blog = get_object_or_404(Blog, pk=pk)
+
+    if request.user in blog.likes.all():
+        blog.likes.remove(request.user)
+        context['liked'] = False
+        context['like_count'] = blog.likes.all().count()
+
+    else:
+        blog.likes.add(request.user)
+        context['liked'] = True
+        context['like_count'] = blog.likes.all().count()
+
+    return JsonResponse(context, safe=False)

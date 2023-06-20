@@ -11,19 +11,19 @@ likeIcon.onclick = () => {
             'Content-type': 'applicatin/json'
         }
     })
-    .then(response => {
-        return response.json();
-    })
-    .then(data => {
-        if(data.liked) {
-            likeIcon.classList.remove('empty-heart');
-        }
-        else {
-            likeIcon.classList.add('empty-heart');
-        }
-        likeCount.innerHTML = data.like_count;
-    })
-    .catch(error => {
-        console.log(error);
-    })
-}
+        .then(response => {
+            return response.json();
+        })
+        .then(data => {
+            if (data.liked) {
+                likeIcon.classList.remove('empty-heart');
+            }
+            else {
+                likeIcon.classList.add('empty-heart');
+            }
+            likeCount.innerHTML = data.like_count;
+        })
+        .catch(error => {
+            console.log(error);
+        });
+};
