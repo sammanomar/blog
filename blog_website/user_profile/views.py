@@ -1,14 +1,38 @@
-from django.shortcuts import render, redirect
-
+from django.shortcuts import redirect, render
 from django.contrib import messages
+from django.contrib.auth import login, logout, authenticate
 
 from .forms import (
-    UserRegistrationForm
+    UserRegistrationForm,
+    LoginForm
 )
 
 
 def login_user(request):
-    return render(request, 'login.html')
+    form = LoginForm()
+
+    if request.method == "POST":
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            user = authenticate(
+                username=form.cleaned_data.get('username'),
+                password=form.cleaned_data.get('password')
+            )
+            if user:
+                login(request, user)
+                return redirect('home')
+            else:
+                messages.warning(request, "Wrong credentials")
+
+    context = {
+        "form": form
+    }
+    return render(request, 'login.html', context)
+
+
+def logout_user(request):
+    logout(request)
+    return redirect('login')
 
 
 def register_user(request):
