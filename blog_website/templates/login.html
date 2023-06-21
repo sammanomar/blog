@@ -17,8 +17,13 @@
                                     <h2>Login to your account</h2>
                                 </div>
                                 <div class="content">
-                                    <form id="contact" action="" method="post">
+                                    <form id="contact" action="" method="POST">
                                         <div class="row">
+                                            {% if messages %}
+                                            <div class="col-md-12 col-sm-12">
+                                                {% include 'message.html' %}
+                                            </div>
+                                            {% endif %}
                                             <div class="col-md-12 col-sm-12">
                                                 <fieldset>
                                                     <input name="username" type="text" id="username_id"
