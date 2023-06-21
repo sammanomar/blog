@@ -65,10 +65,11 @@
                                                 <ul class="post-share">
                                                     <li id="like-count">{{blog.likes.count}}</li>
                                                     {% if liked_by %}
-                                                    <li class="pl-3 pr-3"><a href=""><i class="fa fa-heart"></i></a>
+                                                    <li class="pl-3 pr-3"><a href="{% url 'login' %}"><i
+                                                                class="fa fa-heart"></i></a>
                                                     </li>
                                                     {% else %}
-                                                    <li class="pl-3 pr-3"><a href=""><i
+                                                    <li class="pl-3 pr-3"><a href="{% url 'login' %}"><i
                                                                 class="fa fa-heart empty-heart"></i></a>
                                                     </li>
                                                     {% endif %}
@@ -116,7 +117,7 @@
                                                                 <button type="submit" id="form-submit"
                                                                     class="main-button reply-button">Reply</button>
                                                                 {% else %}
-                                                                <a href="#" id="form-submit"
+                                                                <a href="{% url 'login' %}" id="form-submit"
                                                                     class="main-button reply-button ">Login
                                                                     to reply</a>
                                                                 {% endif %}
@@ -163,7 +164,8 @@
                                                     <button type="submit" id="form-submit"
                                                         class="main-button">Submit</button>
                                                     {% else %}
-                                                    <a href="#" id="form-submit" class="main-button">Login
+                                                    <a href="{% url 'login' %}" id="form-submit"
+                                                        class="main-button">Login
                                                         to
                                                         comment</a>
                                                     {% endif %}
