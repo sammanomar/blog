@@ -13,13 +13,13 @@
                         alt="">
                     <ul class="text-center py-3">
                         <li class="py-2">
-                            <span>Posts: <strong>100</strong></span>
+                            <span>Posts: <strong>{{account.user_blogs.count}}</strong></span>
                         </li>
                         <li class="py-2">
-                            <span>Follwers: <strong>100</strong></span>
+                            <span>Follwers: <strong>{{account.followers.all.count}}</strong></span>
                         </li>
                         <li class="py-2">
-                            <span>Following: <strong>100</strong></span>
+                            <span>Following: <strong>{{account.user_follows.all.count}}</strong></span>
                         </li>
                     </ul>
                 </div>
@@ -40,7 +40,8 @@
                                     </button>
                                 </div>
                                 <div class="modal-body">
-                                    <form method="POST" action="" enctype="multipart/form-data">
+                                    <form method="POST" action="{% url 'change_profile_picture' %}"
+                                        enctype="multipart/form-data">
                                         {% csrf_token %}
                                         <div class="form-group">
                                             <input class="form-control" type="file" name="profile_image" required>
@@ -68,37 +69,53 @@
                 </ul>
             </div>
             <div class="col-md-8">
-                <div class="form-group">
-                    <label for="firstname">Firstname</label>
-                    <input class="form-control" name="first_name" value="{{account.first_name}}" type="text">
-                    <p class="text-danger error py-1">{{form.first_name.errors}}</p>
-                </div>
-                <div class="form-group">
-                    <label for="lastname">Lastname</label>
-                    <input class="form-control" name="last_name" value="{{account.last_name}}" type="text">
-                    <p class="text-danger error py-1">{{form.last_name.errors}}</p>
-                </div>
-                <div class="form-group">
-                    <label for="username">Username</label>
-                    <input class="form-control" name="username" value="{{account.username}}" type="text">
-                    <p class="text-danger error py-1">{{form.username.errors}}</p>
-                </div>
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input class="form-control" name="email" value="{{account.email}}" type="email">
-                    <p class="text-danger error py-1">{{form.email.errors}}</p>
-                </div>
-                <div class="form-group">
-                    <label for="new_password">New Password</label>
-                    <input class="form-control" name="new_password" value="" type="password">
-                </div>
-                <div class="form-group">
-                    <label for="confirm_password">Confirm Password</label>
-                    <input class="form-control" name="confirm_password" value="" type="password">
-                </div>
-                <div class="form-group mt-2">
-                    <button class="btn btn-primary">Update</button>
-                </div>
+                <form class="px-4" action="{% url 'profile' %}" method="POST">
+                    {% csrf_token %}
+                    {% if messages %}
+                    <div class="form-group">
+                        {% include 'message.html' %}
+                    </div>
+                    {% endif %}
+                    {% if form.non_field_errors %}
+                    {% for error in form.non_field_errors %}
+                    <div class="alert danger">
+                        <p class="text-danger">
+                            {{error}}
+                        </p>
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+                    <div class="form-group">
+                        <label for="firstname">Firstname</label>
+                        <input class="form-control" name="first_name" value="{{account.first_name}}" type="text">
+                        <p class="text-danger error py-1">{{form.first_name.errors}}</p>
+                    </div>
+                    <div class="form-group">
+                        <label for="lastname">Lastname</label>
+                        <input class="form-control" name="last_name" value="{{account.last_name}}" type="text">
+                        <p class="text-danger error py-1">{{form.last_name.errors}}</p>
+                    </div>
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input class="form-control" name="username" value="{{account.username}}" type="text">
+                        <p class="text-danger error py-1">{{form.username.errors}}</p>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input class="form-control" name="email" value="{{account.email}}" type="email">
+                        <p class="text-danger error py-1">{{form.email.errors}}</p>
+                    </div>
+                    <div class="form-group">
+                        <label for="new_password">New Password</label>
+                        <input class="form-control" name="new_password" value="" type="password">
+                    </div>
+                    <div class="form-group">
+                        <label for="confirm_password">Confirm Password</label>
+                        <input class="form-control" name="confirm_password" value="" type="password">
+                    </div>
+                    <div class="form-group mt-2">
+                        <button class="btn btn-primary">Update</button>
+                    </div>
                 </form>
             </div>
         </div>
