@@ -112,3 +112,25 @@ def change_profile_picture(request):
             print(form.errors)
 
     return redirect('profile')
+
+
+@login_required(login_url='login')
+def my_blogs(request):
+    queryset = request.user.user_blogs.all()
+    page = request.GET.get('page', 1)
+    paginator = Paginator(queryset, 6)
+
+    try:
+        blogs = paginator.page(page)
+    except EmptyPage:
+        blogs = paginator.page(1)
+    except PageNotAnInteger:
+        blogs = paginator.page(1)
+        return redirect('blogs')
+
+    context = {
+        "blogs": blogs,
+        "paginator": paginator
+    }
+
+    return render(request, 'my_blogs.html', context)
