@@ -19,15 +19,15 @@
                     <div class="form-group">
                         <label for="title">Blog Category</label>
                         <select class="form-control" name="category" id="category_id">
-                        {% for category in categories %}
+                            {% for category in categories %}
                             <option value="{{category.id}}">{{category.title}}</option>
-                        {% endfor %}
-                        <p class="text-danger py-1">{{form.category.errors}}</p>
+                            {% endfor %}
+                            <p class="text-danger py-1">{{form.category.errors}}</p>
                         </select>
                     </div>
                     <div class="form-group">
                         <label for="title">Description</label>
-                        {{form.description|safe}}
+                        <textarea class="form-control" name="description" id="" cols="30" rows="10"></textarea>
                         <p class="text-danger py-1">{{form.description.errors}}</p>
                     </div>
                     <div class="form-group">
@@ -37,8 +37,9 @@
                     </div>
                     <div class="form-group">
                         <label for="title">Tags</label>
-                        <textarea class="form-control" name="tags" id="" cols="30" rows="10" placeholder="enter comma seprrated values"></textarea>
-                        <p class="text-danger py-1">{{form.tags.errors}}</p> 
+                        <textarea class="form-control" name="tags" id="" cols="30" rows="10"
+                            placeholder="Enter comma separated values"></textarea>
+                        <p class="text-danger py-1">{{form.tags.errors}}</p>
                     </div>
                     <div class="form-group my-2">
                         <button type="submit" class="btn btn-primary btn-block">Add</button>
