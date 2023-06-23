@@ -14,4 +14,5 @@ urlpatterns = [
     path('search_blogs/', search_blogs, name='search_blogs'),
     path('my_blogs/', my_blogs, name='my_blogs'),
     path('add_blog/', add_blog, name='add_blog'),
+    path('update_blog/<str:slug>/', update_blog, name='update_blog'),
 ]
