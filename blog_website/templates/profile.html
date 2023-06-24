@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block title %} My Pofile {% endblock title %}
+{% block title %} My Profile {% endblock title %}
 
 {% block content %}
 
@@ -16,7 +16,7 @@
                             <span>Posts: <strong>{{account.user_blogs.count}}</strong></span>
                         </li>
                         <li class="py-2">
-                            <span>Follwers: <strong>{{account.followers.all.count}}</strong></span>
+                            <span>Followers: <strong>{{account.followers.all.count}}</strong></span>
                         </li>
                         <li class="py-2">
                             <span>Following: <strong>{{account.user_follows.all.count}}</strong></span>

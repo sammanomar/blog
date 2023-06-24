@@ -15,10 +15,19 @@
                             <span>Posts: <strong>{{account.user_blogs.count}}</strong></span>
                         </li>
                         <li class="py-2">
-                            <span>Followers: <strong>{{account.followers.all.count}}</strong></span>
+                            <span>Followers: <strong>{{account.user_followers.count}}</strong></span>
                         </li>
                         <li class="py-2">
-                            <span>Following: <strong>{{account.user_follows.all.count}}</strong></span>
+                            <span>Following: <strong>{{account.user_follows.count}}</strong></span>
+                        </li>
+                        <li class="py-2">
+                            {% if following %}
+                            <a class="btn btn-primary text-decoration-none"
+                                href="{% url 'follow_or_unfollow_user' account.id %}">UnFollow</a>
+                            {% else %}
+                            <a class="btn btn-primary text-decoration-none"
+                                href="{% url 'follow_or_unfollow_user' account.id %}">Follow</a>
+                            {% endif %}
                         </li>
                     </ul>
                 </div>
