@@ -16,6 +16,7 @@ from .decorators import (
 )
 
 from .models import Follow, User
+from notification.models import Notificaiton
 
 
 @never_cache
@@ -154,3 +155,17 @@ def follow_or_unfollow_user(request, user_id):
         follow.delete()
 
     return redirect("view_user_information", username=followed.username)
+
+
+@login_required(login_url='login')
+def user_notifications(request):
+    notifications = Notificaiton.objects.filter(
+        user=request.user,
+        is_seen=False
+    )
+
+    for notification in notifications:
+        notification.is_seen = True
+        notification.save()
+
+    return render(request, 'notifications.html')

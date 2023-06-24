@@ -13,7 +13,7 @@ def send_notification_to_followers_when_blog_created(instance, created, *args, *
 
         for data in followers:
             follower = data.followed_by
-            
+
             if not data.muted:
                 Notificaiton.objects.create(
                     content_object=instance,
@@ -27,7 +27,7 @@ def send_notification_to_followers_when_blog_created(instance, created, *args, *
 def send_notification_to_user_when_someone_followed(instance, created, *args, **kwargs):
     if created:
         followed = instance.followed
-    
+
         if not instance.muted:
             Notificaiton.objects.create(
                 content_object=instance,
@@ -49,4 +49,3 @@ def send_notification_when_someone_likes_blog(instance, pk_set, action, *args, *
             text=f"{user.username} liked your blog",
             notification_types="Like"
         )
-
