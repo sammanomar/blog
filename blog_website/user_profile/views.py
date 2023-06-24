@@ -118,6 +118,7 @@ def change_profile_picture(request):
 def view_user_information(request, username):
     account = get_object_or_404(User, username=username)
     following = False
+    muted = None
 
     if request.user.is_authenticated:
 
@@ -130,9 +131,17 @@ def view_user_information(request, username):
         if followers.exists():
             following = True
 
+    if following:
+        queryset = followers.first()
+        if queryset.muted:
+            muted = True
+        else:
+            muted = False
+
     context = {
         "account": account,
         "following": following,
+        "muted": muted
     }
     return render(request, "user_information.html", context)
 
@@ -169,3 +178,24 @@ def user_notifications(request):
         notification.save()
 
     return render(request, 'notifications.html')
+
+
+@login_required(login_url='login')
+def mute_or_unmute_user(request, user_id):
+    user = get_object_or_404(User, pk=user_id)
+    follower = get_object_or_404(User, pk=request.user.pk)
+    instance = get_object_or_404(
+        Follow,
+        followed=user,
+        followed_by=follower
+    )
+
+    if instance.muted:
+        instance.muted = False
+        instance.save()
+
+    else:
+        instance.muted = True
+        instance.save()
+
+    return redirect('view_user_information', username=user.username)
